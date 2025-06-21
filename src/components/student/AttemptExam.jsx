@@ -1,7 +1,7 @@
-import { useState, useEffect,useCallBack} from 'react';
+import { useState, useEffect,useCallback } from 'react';
 import { useLocation, useNavigate, } from 'react-router-dom';
 import styles from './AttemptExam.module.css';
-
+ 
 const AttemptExam = () => {
   const { state } = useLocation();
   const { exam } = state;
@@ -11,7 +11,7 @@ const AttemptExam = () => {
   const navigate = useNavigate();
 
   
-const handleSubmit = useCallBack(() => {
+const handleSubmit = useCallback(() => {
   navigate('/result', { state: { exam, answers } });
 }, [navigate, exam, answers]);
 
