@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect,useCallBack} from 'react';
+import { useLocation, useNavigate, } from 'react-router-dom';
 import styles from './AttemptExam.module.css';
 
 const AttemptExam = () => {
@@ -10,10 +10,13 @@ const AttemptExam = () => {
   const [timeLeft, setTimeLeft] = useState(exam.duration * 60); 
   const navigate = useNavigate();
 
+  
+const handleSubmit = useCallBack(() => {
+  navigate('/result', { state: { exam, answers } });
+}, [navigate, exam, answers]);
+
   useEffect(() => {
-      const handleSubmit = () => {
-    navigate('/result', { state: { exam, answers } });
-  };
+   
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -26,7 +29,9 @@ const AttemptExam = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [handleSubmit]);
+
+  
 
   const handleSelect = (opt) => {
     const updated = [...answers];
@@ -45,10 +50,7 @@ const AttemptExam = () => {
   const handlePrev=()=>{
      setCurrent(current-1);
   }
-  const handleSubmit = () => {
-    navigate('/result', { state: { exam, answers } });
-  };
-
+ 
   const formatTime = (secs) => {
     const min = Math.floor(secs / 60);
     const sec = secs % 60;

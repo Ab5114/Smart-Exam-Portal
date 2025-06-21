@@ -1,12 +1,12 @@
  import { useNavigate } from "react-router-dom";
- import { useEffect } from "react";
+ import { useEffect ,useMemo} from "react";
 
 import styles from "./AdminDashboard.module.css";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-const examList = [
+const examList = useMemo(() => [
   {
     id: 1,
     subject: "Mathematics",
@@ -42,11 +42,11 @@ const examList = [
       },
     ],
   },
-];
+], []);
 
   useEffect(() => {
     localStorage.setItem("exams", JSON.stringify(examList));
-  }, []);
+  }, [examList]);
 
    return (
     <div className={styles.dashboard}>

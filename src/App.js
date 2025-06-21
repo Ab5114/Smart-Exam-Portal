@@ -7,8 +7,7 @@ import Questions from "./components/Questions";
 import StudentDashboard from "./components/student/StudentDashboard";
 import AttemptExam from "./components/student/AttemptExam";
 import Result from "./components/student/Result";
-
-function App() {
+ function App() {
   return (
     <Router>
       <Routes>
