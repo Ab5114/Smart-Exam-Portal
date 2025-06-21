@@ -22,7 +22,7 @@ const Home = () => {
         </div>
         <div className={styles.role}>
             
-          <div className={styles.student} onClick={()=>alert("Student Version Coming Soon !!")}>
+          <div className={styles.student} onClick={()=>navigate("/student")}>
             <img src={pic2} alt="student" />
             <h3>Student</h3>
           </div>
