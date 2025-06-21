@@ -17,7 +17,7 @@ const Home = () => {
          <div className={styles.logocontainer}>
           <div className={styles.logo}>
             <img src={pic1} alt="logo" />
-            <h3>Online Exam</h3>
+            <h3>Smart Exam Portal</h3>
           </div>
         </div>
         <div className={styles.role}>
