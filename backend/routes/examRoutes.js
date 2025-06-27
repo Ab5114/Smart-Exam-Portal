@@ -2,8 +2,7 @@ const express = require("express");
  const router = express.Router();
 const Exam = require("../models/Exam");
  
-// Create exam
-router.post("/", async (req, res) => {
+ router.post("/", async (req, res) => {
   try {
     const exam = new Exam(req.body);
     await exam.save();
@@ -13,17 +12,17 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get all exams
+ 
 router.get("/", async (req, res) => {
   try {
     const exams = await Exam.find();
-    res.json(exams);
+res.json(exams);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Get exam by ID
+ 
 router.get("/:id", async (req, res) => {
   try {
     const exam = await Exam.findById(req.params.id);
@@ -33,8 +32,7 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-// Update exam by ID
+ 
 router.put("/:id", async (req, res) => {
   try {
     const updated = await Exam.findByIdAndUpdate(req.params.id, req.body, {
@@ -47,7 +45,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete exam by ID
+ 
 router.delete("/:id", async (req, res) => {
   try {
     const deleted = await Exam.findByIdAndDelete(req.params.id);
