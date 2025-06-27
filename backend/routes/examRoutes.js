@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
   try {
     const exams = await Exam.find();
 res.json(exams);
+console.log(exams);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
