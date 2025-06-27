@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-
+const Exam = require("../models/Exam");
 const Exam = mongoose.model("Exam", examSchema);
 
 // Create exam
