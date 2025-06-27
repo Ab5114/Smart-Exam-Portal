@@ -2,12 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const examRoutes = require("./routes/examRoutes");
+
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Backend is running');
-});
+mongoose.connect("mongodb://localhost:27017/examdb", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("MongoDB connection error:", err));
+
+app.use("/api/exams",examRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
