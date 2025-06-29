@@ -9,7 +9,7 @@ const StudentDashboard = () => {
    const [examList,setExamList] = useState([]);
 
    useEffect(()=>{
-     axios.get("http://localhost:5000/api/exams").then((res)=>{
+     axios.get("http://192.168.162.242:5000/api/exams").then((res)=>{
     setExamList(res.data);
     console.log(res.data);
      }).catch((error)=>{
