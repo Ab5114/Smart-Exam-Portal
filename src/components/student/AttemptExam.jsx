@@ -1,6 +1,7 @@
-import { useState, useEffect,useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, } from 'react-router-dom';
 import styles from './AttemptExam.module.css';
+import axios from 'axios';
  
 const AttemptExam = () => {
   const { state } = useLocation();
@@ -10,26 +11,30 @@ const AttemptExam = () => {
   const [timeLeft, setTimeLeft] = useState(exam.duration * 60); 
   const navigate = useNavigate();
 
-  
-const handleSubmit = useCallback(() => {
-  navigate('/result', { state: { exam, answers } });
-}, [navigate, exam, answers]);
+   useEffect(() => {
+  const timer = setInterval(() => {
+    setTimeLeft((prev) => prev - 1);
+  }, 1000);
 
-  useEffect(() => {
-   
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmit();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  return () => clearInterval(timer); // cleanup
+}, [timeLeft]);
 
-    return () => clearInterval(timer);
-  }, [handleSubmit]);
+
+const handleSubmit = async () => {
+  try {
+    const res = await axios.post("http://localhost:5000/api/exams/evaluate", {
+      examId: exam._id,
+      answers: answers
+    });
+
+    const { score, totalMarks } = res.data;
+    navigate("/result", { state: { score, totalMarks } });
+  } catch (error) {
+    console.error("Submission failed:", error);
+    alert("Failed to submit exam. Please try again.");
+  }
+};
+
 
   
 
