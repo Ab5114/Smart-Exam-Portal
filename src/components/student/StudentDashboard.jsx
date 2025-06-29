@@ -1,11 +1,21 @@
  import { useNavigate } from 'react-router-dom';
 import styles from './StudentDashboard.module.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
 
-   const examList = JSON.parse(localStorage.getItem('exams')) || [];
+   const [examList,setExamList] = useState([]);
 
+   useEffect(()=>{
+     axios.get("http://localhost:5000/api/exams").then((res)=>{
+    setExamList(res.data);
+    console.log(res.data);
+     }).catch((error)=>{
+      console.error("Failed to Fetch exam in student",error);
+     });
+   },[])
   const now = new Date();
 
   return (
@@ -22,7 +32,7 @@ const StudentDashboard = () => {
             <p>{exam.date} at {exam.startTime}</p>
             <button
               disabled={!isAvailable}
-              onClick={() => navigate(`/attempt/${exam.id}`, {
+              onClick={() => navigate(`/attempt/${exam._id}`, {
                 state: { exam }
               })}
             >
