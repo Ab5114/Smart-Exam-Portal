@@ -16,13 +16,13 @@ const AttemptExam = () => {
     setTimeLeft((prev) => prev - 1);
   }, 1000);
 
-  return () => clearInterval(timer); // cleanup
+  return () => clearInterval(timer);  
 }, [timeLeft]);
 
 
 const handleSubmit = async () => {
   try {
-    const res = await axios.post("http://localhost:5000/api/exams/evaluate", {
+    const res = await axios.post("http://localhost:5000/api/exams/student/evaluate", {
       examId: exam._id,
       answers: answers
     });

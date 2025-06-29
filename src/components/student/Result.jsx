@@ -1,30 +1,24 @@
- import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from "./Result.module.css";
 
 const Result = () => {
   const { state } = useLocation();
-  const { exam, answers } = state;
-  const {subject,description}=exam;
-     const navigate = useNavigate();
+  const { score, totalMarks } = state; 
+  const navigate = useNavigate();
 
-  const correct = exam.questions.reduce((acc, q, i) => (
-    acc + (answers[i] === q.answer ? 1 : 0)
-  ), 0);
-
-  const handleBack=()=>{
+  const handleBack = () => {
     navigate("/student");
-  }
+  };
 
   return (
     <div>
-          <div className={styles.header}>
-          <h2>{subject} - {description}</h2>
-       </div>
+      <div className={styles.header}>
+        <h2>Exam Result</h2>
+      </div>
       <h2>Result</h2>
-     
-      <p className={styles.score}>Score: {correct*4} / {exam.questions.length*4} </p>
+      <p className={styles.score}>Score: {score} / {totalMarks}</p>
       <div className={styles.controls}>
-      <button className={styles.nextBtn} onClick={handleBack}> Back</button>
+        <button className={styles.nextBtn} onClick={handleBack}>Back</button>
       </div>
     </div>
   );

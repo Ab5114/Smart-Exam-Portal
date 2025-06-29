@@ -58,7 +58,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.use("/evalaute",evaluate);
+router.use("/evaluate",evaluate);
 
 
 
