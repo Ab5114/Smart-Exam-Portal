@@ -14,9 +14,9 @@ const Questions = () => {
 
   const handleDelete = async (index) => {
   const updatedQuestions = [...questions];
-  updatedQuestions.splice(index, 1); // ✅ remove the question
+  updatedQuestions.splice(index, 1); 
 
-  setQuestions(updatedQuestions); // ✅ update frontend immediately
+  setQuestions(updatedQuestions); 
 
   try {
     const updatedExam = {
@@ -25,7 +25,7 @@ const Questions = () => {
       questions: updatedQuestions, // ✅ send updated list
     };
 
-    await axios.put(`http://localhost:5000/api/exams/${id}`, updatedExam); // ✅ update backend
+    await axios.put(`http://localhost:5000/api/exams/admin${id}`, updatedExam); 
     alert("Question deleted successfully!");
     setEditingIndex(null);
   } catch (error) {
@@ -52,7 +52,7 @@ const handleSave = async () => {
       questions: updatedQuestions,
     };
 
-    await axios.put(`http://localhost:5000/api/exams/${id}`, updatedExam);
+    await axios.put(`http://localhost:5000/api/exams/admin/${id}`, updatedExam);
     alert('Exam replaced successfully!');
     setEditingIndex(null);
   } catch (error) {

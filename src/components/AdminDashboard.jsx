@@ -12,7 +12,7 @@ const [examList, setExamList] = useState([]);
  
 
 useEffect(() => {
-  axios.get("http://localhost:5000/api/exams")
+  axios.get("http://localhost:5000/api/exams/admin")
     .then((res) => {
       setExamList(res.data); 
       console.log("fetched exam data ",res.data) ;
