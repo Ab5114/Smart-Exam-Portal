@@ -2,6 +2,7 @@ const express = require("express");
  const router = express.Router();
 const Exam = require("../models/Exam");
  
+const evaluate=require("./evaluate");
  router.post("/", async (req, res) => {
   try {
     const exam = new Exam(req.body);
@@ -56,5 +57,9 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.use("/evalaute",evaluate);
+
+
 
 module.exports = router;
