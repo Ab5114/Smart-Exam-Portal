@@ -46,7 +46,7 @@ const CreateExam = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/exams", formData);
+      const res = await axios.post("http://localhost:5000/api/exams/admin", formData);
       console.log("Submitted:", res.data);
       alert("Exam created successfully!");
       navigate("/admin-dashboard");
