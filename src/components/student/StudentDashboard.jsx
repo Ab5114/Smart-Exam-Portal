@@ -22,7 +22,8 @@ const StudentDashboard = () => {
     <div className={styles.wrapper}>
       <h2>Available Exams</h2>
       {examList.map((exam, index) => {
-        const start = new Date(`${exam.date}T${exam.startTime}`);
+       const start = new Date(`${exam.date} ${exam.startTime}`);
+
         const isAvailable = now >= start;
 
         return (
