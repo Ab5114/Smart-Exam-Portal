@@ -9,13 +9,16 @@ A complete **offline/local exam system** for colleges and institutions. Designed
 
 ## 🛠️ Tech Stack
 
-| Layer       | Technology          |
-|-------------|---------------------|
-| Frontend    | React.js, HTML/CSS  |
-| Backend     | Node.js, Express.js |
-| Database    | MongoDB (can be local instance) |
-| Authentication | JWT / Session-based |
-| Deployment  | Localhost + LAN     |
+| Layer               | Technology                                       |
+| ------------------- | ------------------------------------------------ |
+| **Frontend**        | React.js, HTML, CSS, Axios, Service Workers      |
+| **Backend**         | Node.js, Express.js                              |
+| **Database**        | MongoDB (local instance or LAN-based sync)       |
+| **Authentication**  | JWT (JSON Web Token) for secure role-based login |
+| **Encryption**      | AES-256 for exam content, bcrypt for passwords   |
+| **AI Assistant**    | OpenAI API (Chatbot), LangChain (context mgmt)   |
+| **Deployment**      | Localhost with LAN support (for offline use)     |
+| **Offline Support** | IndexedDB/LocalStorage, Background Sync          |
 
 ---
 
@@ -30,29 +33,30 @@ A complete **offline/local exam system** for colleges and institutions. Designed
 
 ## 🚀 Key Features
 
-- 🔐 **Role-based Authentication**  
-  Secure login for both **Admin** and **Student** users using JWT/session-based auth.
+🗃️ 1. Offline-First Architecture
+Exams and student responses are locally cached (IndexedDB or LocalStorage), allowing users to continue work uninterrupted—even without internet.
 
-- 📝 **Exam Creation and Management**  
-  Admins can create exams, define questions, set durations, and assign them to students.
+Auto-sync functionality automatically uploads completed exams to the cloud once connectivity is restored.
 
-- 🧑‍🎓 **Student Interface**  
-  Clean and focused exam screen with timer, question navigation, and auto-save.
+🛂 2. Secure Exam Distribution
+Role-based access differentiates between Admin and Student, ensuring only authorized actions.
 
-- ⏱️ **Timed Auto-Submission**  
-  Exams automatically submit when time expires or on manual submission.
+Exam papers are stored encrypted (AES-256) on devices and protected with end-to-end encryption to prevent unauthorized access or leaks.
 
-- 🕵️ **Cheating Prevention**  
-  Includes optional **tab switch detection** and potential webcam monitoring (optional feature).
+🤖 3. Real-Time Chat Support
+An integrated AI assistant chatbot provides instant technical help throughout the exam, enabling students to resolve issues without needing human intervention.
 
-- 📊 **Automatic Evaluation**  
-  Objective questions are auto-evaluated with immediate result calculation.
+Supports natural language queries, such as “Why is my timer not working?” or “How do I submit?” to reduce admin burden.
 
-- 🌐 **Offline Capability**  
-  Works entirely over LAN (localhost and private IPs), with no internet dependency.
+⏱️ 4. Adaptive Exam Management
+Admins can create, edit, delete, and schedule exams via the secure dashboard.
 
-- 💾 **MongoDB Integration**  
-  All data—users, exams, responses, and results—stored securely in a local MongoDB instance.
+Students start only when scheduled (based on date/time), with built-in timer warnings and auto-submit on timeout.
+
+💾 5. Tamper-Proof Exam Integrity
+Question papers and student responses are encrypted at rest, and file transfers (e.g., via USB or local network) maintain end-to-end encryption.
+
+Detects changes in paper integrity by using content hashing before and after offline transfers.
 
 ---
 
