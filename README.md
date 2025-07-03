@@ -2,8 +2,6 @@
 
 A complete **offline/local exam system** for colleges and institutions. Designed to work on LAN without requiring internet access, this smart portal ensures secure, real-time exam management, monitoring, and evaluation.
 
-> 🏆 Hackathon Project | 💼 Resume-Ready | 🔒 Internet-Free Local Exams
-
 
 ---
 
