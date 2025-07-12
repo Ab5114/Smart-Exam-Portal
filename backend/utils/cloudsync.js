@@ -13,7 +13,7 @@ async function syncResultsToCloud() {
 
   for (const result of unsynced) {
     try {
-      const res = await axios.post("https://your-cloud-api.com/api/sync-result", result);
+      const res = await axios.post("https://custom-cloud-api/api/sync-result", result);
       if (res.status === 201) {
         result.synced = true;
         await result.save();
