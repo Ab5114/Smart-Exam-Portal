@@ -1,27 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const Exam = require("../models/Exam");
-const StudentResult = require("../models/StudentResult"); 
+const StudentResult = require("../models/Result"); 
 const { decrypt } = require("../utils/encrypt.js");
 
- router.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const exams = await Exam.find({}, { 'questions.answer': 0 }).lean();
 
-     const decryptedExams = exams.map(exam => ({
-      ...exam,
-      questions: exam.questions.map(q => ({
-        question: decrypt(q.question),
-        options: q.options.map(opt => decrypt(opt)),
-       }))
-    }));
+    console.log("Fetched exams for student:", exams.length);
 
+    const decryptedExams = exams.map(exam => ({
+      ...exam,
+      questions: exam.questions.map(q => {
+        let question = q.question;
+        let options = q.options;
+
+        try {
+          question = decrypt(q.question);
+          options = q.options.map(opt => decrypt(opt));
+        } catch (e) {
+          console.warn("Decryption failed for student exam question:", q, e.message);
+        }
+
+        return { question, options };
+      })
+    }));
+  console.log("called ",decryptedExams);
     res.json(decryptedExams);
   } catch (err) {
-    console.error('Error fetching student exams:', err);
+    console.error('Error fetching student exams:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
  router.post('/evaluate', async (req, res) => {
   const { examId, answers, studentId } = req.body;

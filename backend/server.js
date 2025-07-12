@@ -3,6 +3,9 @@ const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
 
+const syncResultsToCloud = require("./utils/cloudsync");
+
+
 const adminRoutes = require("./routes/adminRoute");
 
 const studentRoutes=require("./routes/studentRoute");
@@ -18,6 +21,10 @@ mongoose.connect("mongodb://localhost:27017/examdb")
 app.use("/api/exams/admin",adminRoutes);
 app.use("/api/exams/student",studentRoutes);
  
+setInterval(() => {
+  syncResultsToCloud();
+}, 5 * 60 * 1000);
+
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

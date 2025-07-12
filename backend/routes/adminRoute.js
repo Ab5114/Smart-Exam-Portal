@@ -1,8 +1,8 @@
+// routes/adminRoute.js
 const express = require("express");
 const router = express.Router();
 const Exam = require("../models/Exam");
-const evaluate = require("./evaluate");
-
+ 
 const { encrypt, decrypt } = require("../utils/encrypt.js"); 
 
  router.post("/", async (req, res) => {
@@ -27,12 +27,39 @@ const { encrypt, decrypt } = require("../utils/encrypt.js");
 
  router.get("/", async (req, res) => {
   try {
-    const exams = await Exam.find({}, { 'questions.answer': 0 }); 
-    res.json(exams); 
+    const exams = await Exam.find();
+
+    const decryptedExams = exams.map((exam) => {
+      const decryptedQuestions = exam.questions.map((q) => {
+        let question = q.question;
+        let options = q.options;
+        let answer = q.answer;
+
+        try {
+          question = decrypt(q.question);
+          options = q.options.map(decrypt);
+          answer = decrypt(q.answer);
+        } catch (e) {
+          console.warn("Decryption failed for question:", q.question, e.message);
+        }
+
+        return { question, options, answer };
+      });
+
+      return {
+        ...exam.toObject(),
+        questions: decryptedQuestions,
+      };
+    });
+
+    // console.log("Sending data to admin:", decryptedExams);
+    res.json(decryptedExams);
   } catch (error) {
+    console.error("Error in /api/exams/admin:", error.message);
     res.status(500).json({ error: error.message });
   }
 });
+
 
  router.get("/:id", async (req, res) => {
   try {
@@ -77,6 +104,7 @@ const { encrypt, decrypt } = require("../utils/encrypt.js");
   }
 });
 
+
  router.delete("/:id", async (req, res) => {
   try {
     const deleted = await Exam.findByIdAndDelete(req.params.id);
@@ -87,6 +115,5 @@ const { encrypt, decrypt } = require("../utils/encrypt.js");
   }
 });
 
-router.use("/evaluate", evaluate);
-
+ 
 module.exports = router;

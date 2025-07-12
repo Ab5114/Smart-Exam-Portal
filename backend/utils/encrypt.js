@@ -1,11 +1,11 @@
  const crypto = require("crypto");
 
 const algorithm = "aes-256-cbc";
-
+require("dotenv").config();
 const secret = process.env.ENCRYPTION_SECRET;
 const key = crypto
   .createHash("sha256")
-  .update(String("secret")) 
+  .update(String(secret)) 
   .digest("base64")
   .substr(0, 32);
 
