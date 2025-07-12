@@ -1,54 +1,83 @@
 const express = require("express");
- const router = express.Router();
+const router = express.Router();
 const Exam = require("../models/Exam");
- 
-const evaluate=require("./evaluate");
+const evaluate = require("./evaluate");
+
+const { encrypt, decrypt } = require("../utils/encrypt.js"); 
+
  router.post("/", async (req, res) => {
   try {
-    const exam = new Exam(req.body);
+    const encryptedQuestions = req.body.questions.map((q) => ({
+      question: encrypt(q.question),
+      options: q.options.map((opt) => encrypt(opt)),
+      answer: encrypt(q.answer),
+    }));
+
+    const exam = new Exam({
+      ...req.body,
+      questions: encryptedQuestions,
+    });
+
     await exam.save();
-    res.status(201).json(exam);
+    res.status(201).json({ message: "Exam created with encrypted questions." });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
- 
-router.get("/", async (req, res) => {
+ router.get("/", async (req, res) => {
   try {
-    const exams = await Exam.find();
-res.json(exams);
-console.log(exams);
+    const exams = await Exam.find({}, { 'questions.answer': 0 }); 
+    res.json(exams); 
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
- 
-router.get("/:id", async (req, res) => {
+ router.get("/:id", async (req, res) => {
   try {
     const exam = await Exam.findById(req.params.id);
     if (!exam) return res.status(404).json({ message: "Exam not found" });
-    res.json(exam);
+
+    const decryptedQuestions = exam.questions.map((q) => ({
+      question: decrypt(q.question),
+      options: q.options.map(decrypt),
+      answer: decrypt(q.answer),
+    }));
+
+    res.json({
+      ...exam.toObject(),
+      questions: decryptedQuestions,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
- 
-router.put("/:id", async (req, res) => {
+
+ router.put("/:id", async (req, res) => {
   try {
-    const updated = await Exam.findByIdAndUpdate(req.params.id, req.body, {
+    let updateData = { ...req.body };
+
+    if (req.body.questions) {
+      updateData.questions = req.body.questions.map((q) => ({
+        question: encrypt(q.question),
+        options: q.options.map(encrypt),
+        answer: encrypt(q.answer),
+      }));
+    }
+
+    const updated = await Exam.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
+
     if (!updated) return res.status(404).json({ message: "Exam not found" });
-    res.json(updated);
+    res.json({ message: "Exam updated and encrypted", exam: updated });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
- 
-router.delete("/:id", async (req, res) => {
+ router.delete("/:id", async (req, res) => {
   try {
     const deleted = await Exam.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ message: "Exam not found" });
@@ -58,8 +87,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.use("/evaluate",evaluate);
-
-
+router.use("/evaluate", evaluate);
 
 module.exports = router;
